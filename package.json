@@ -1,0 +1,26 @@
+{
+  "private": true,
+  "name": "remix-monorepo-prisma",
+  "type": "module",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "nx run-many -t build",
+    "dev": "nx run-many -t dev",
+    "lint": "nx run-many -t lint",
+    "test": "nx run-many -t test",
+    "e2e": "nx run-many -t e2e"
+  },
+  "dependencies": {
+    "ui": "workspace:*"
+  },
+  "devDependencies": {
+    "bun-types": "latest",
+    "nx": "17.0.1"
+  },
+  "peerDependencies": {
+    "typescript": "^5.2.2"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "name": "remix-monorepo-prisma",
+  "targetDefaults": {},
+  "affected": {
+    "defaultBase": "master"
+  }
+}
