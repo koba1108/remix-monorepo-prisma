@@ -2,6 +2,7 @@ import {EmailLoginForm, EmailLoginFormProps} from 'ui'
 import {ActionFunctionArgs} from "@remix-run/node";
 import {Form} from '@remix-run/react'
 import {z} from "zod";
+import {FormEvent} from "react";
 
 // リクエストパラメータ
 const props: EmailLoginFormProps = {
@@ -17,6 +18,21 @@ const emailFormRequest = z.object({
   email: z.string().email().min(1, {message: "Email is required"}),
   password: z.string().min(8, {message: "Password must be at least 8 characters"}),
 })
+
+function onFormChange(e: FormEvent<HTMLFormElement>) {
+  const target = e.target as any
+  switch (target.name) {
+    case "id":
+      console.log('id', target.value)
+      break
+    case "email":
+      console.log('email', target.value)
+      break
+    case "password":
+      console.log('password', target.value)
+      break
+  }
+}
 
 // action内で safeParse を使うと validation と型変換が同時に行える
 export const action = async ({request}: ActionFunctionArgs) => {
@@ -40,7 +56,7 @@ export const action = async ({request}: ActionFunctionArgs) => {
 
 export default function Login() {
   return (
-    <Form id="id" method="POST">
+    <Form id="id" method="POST" onChange={onFormChange}>
       <EmailLoginForm
         id={props.id}
         email={props.email}
