@@ -23,15 +23,21 @@ function onFormChange(e: FormEvent<HTMLFormElement>) {
   const target = e.target as any
   switch (target.name) {
     case "id":
-      console.log('id', target.value)
+      props.id = target.value
       break
     case "email":
-      console.log('email', target.value)
+      props.email = target.value
       break
     case "password":
-      console.log('password', target.value)
+      props.password = target.value
       break
   }
+  const parsed = emailFormRequest.safeParse(props)
+  if (!parsed.success) {
+    console.error('error', parsed.error)
+    return
+  }
+  console.log('success', parsed.data)
 }
 
 // action内で safeParse を使うと validation と型変換が同時に行える
