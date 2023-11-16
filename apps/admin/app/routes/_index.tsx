@@ -1,25 +1,9 @@
 import {EmailLoginForm, EmailLoginFormProps} from 'ui'
-import {Form} from '@remix-run/react'
-import {initializeApp} from "firebase/app";
-import {getAuth, signInWithEmailAndPassword} from "firebase/auth";
+import {Form, useNavigate} from '@remix-run/react'
 import {z} from "zod";
-import {FormEvent} from "react";
-
-async function getTenant() {
-  // todo: あとで client sideだけで実行するように書く
-  const {ENV} = window as any
-  const app = initializeApp({
-    apiKey: ENV.FIREBASE_API_KEY || '',
-    authDomain: ENV.FIREBASE_AUTH_DOMAIN || '',
-    projectId: ENV.FIREBASE_PROJECT_ID || '',
-    storageBucket: ENV.FIREBASE_STORAGE_BUCKET || '',
-    messagingSenderId: ENV.FIREBASE_MESSAGING_SENDER_ID || '',
-    appId: ENV.FIREBASE_APP_ID || '',
-  });
-  const auth = getAuth(app)
-  auth.tenantId = ENV.FIREBASE_TENANT_ID || ''
-  return auth
-}
+import React, {FormEvent, useContext} from "react";
+import {signInWithEmailAndPassword} from 'firebase/auth'
+import {FirebaseContext} from '../../context';
 
 // リクエストパラメータ
 const props: EmailLoginFormProps = {
@@ -51,26 +35,25 @@ function onFormChange(e: FormEvent<HTMLFormElement>) {
   console.log('success', parsed.data)
 }
 
-async function doLogin(e: FormEvent<HTMLFormElement>) {
-  try {
-    e.preventDefault()
-    const user = await signInWithEmailAndPassword(await getTenant(), props.email, props.password)
-    console.log({user})
-  } catch (e) {
-    console.error(e)
-  }
-}
+export default function Index() {
+  const navigator = useNavigate()
+  const {auth} = useContext(FirebaseContext)
 
-export default function Login() {
+  async function doLogin(e: FormEvent<HTMLFormElement>) {
+    try {
+      e.preventDefault()
+      const user = await signInWithEmailAndPassword(auth, props.email, props.password)
+      if (user) {
+        navigator("/private")
+      }
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
   return (
-    <Form
-      onChange={onFormChange}
-      onSubmit={doLogin}
-    >
-      <EmailLoginForm
-        email={props.email}
-        password={props.password}
-      />
+    <Form onChange={onFormChange} onSubmit={doLogin}>
+      <EmailLoginForm email={props.email} password={props.password}/>
     </Form>
   );
 }

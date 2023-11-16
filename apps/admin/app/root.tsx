@@ -11,6 +11,7 @@ import {
 import React from "react";
 import {useLoaderData} from "react-router";
 import {json} from "@remix-run/node";
+import {FirebaseProvider, FirebaseProviderConfig} from "../context";
 
 export async function loader() {
   return json({
@@ -32,6 +33,15 @@ export const links: LinksFunction = () => [
 
 export default function App() {
   const data: any = useLoaderData();
+  const firebaseConfig: FirebaseProviderConfig = {
+    apiKey: data.ENV.FIREBASE_API_KEY,
+    authDomain: data.ENV.FIREBASE_AUTH_DOMAIN,
+    projectId: data.ENV.FIREBASE_PROJECT_ID,
+    storageBucket: data.ENV.FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: data.ENV.FIREBASE_MESSAGING_SENDER_ID,
+    appId: data.ENV.FIREBASE_APP_ID,
+    tenantId: data.ENV.FIREBASE_TENANT_ID,
+  }
   return (
     <html lang="en">
       <head>
@@ -42,11 +52,15 @@ export default function App() {
         <Links />
       </head>
       <body>
-        <Outlet />
+        <FirebaseProvider config={firebaseConfig}>
+          <Outlet />
+        </FirebaseProvider>
         <ScrollRestoration />
         <script
           dangerouslySetInnerHTML={{
-            __html: `window.ENV = ${JSON.stringify(data.ENV)}`,
+            __html: `window.ENV = ${JSON.stringify(
+              data.ENV
+            )}`,
           }}
         />
         <Scripts />
