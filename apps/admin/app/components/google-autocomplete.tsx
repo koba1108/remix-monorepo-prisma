@@ -2,7 +2,7 @@ import usePlacesAutocompleteService from 'react-google-autocomplete/lib/usePlace
 
 
 export default function GoogleAutocomplete() {
-  const {default: useGooglePlace} = usePlacesAutocompleteService
+  const {default: useGooglePlace} = usePlacesAutocompleteService as any
   const {
     // placesService,
     placePredictions,
