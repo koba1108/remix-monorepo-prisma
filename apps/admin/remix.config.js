@@ -5,9 +5,16 @@ export default {
     modules: {
       console: true
     }
-  }
+  },
+  serverDependenciesToBundle: [
+    'react',
+    'react-paginate',
+    'react-google-autocomplete',
+    /~react-icons\/(.*)/,
+  ],
   // appDirectory: "app",
-  // assetsBuildDirectory: "public/build",
+  assetsBuildDirectory: "public/build",
   // publicPath: "/build/",
   // serverBuildPath: "build/index.js",
+  tailwind: true,
 };

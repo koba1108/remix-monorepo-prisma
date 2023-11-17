@@ -13,6 +13,8 @@ import {useLoaderData} from "react-router";
 import {json} from "@remix-run/node";
 import {FirebaseProvider, FirebaseProviderConfig} from "../context";
 
+import styles from "./tailwind.css";
+
 export async function loader() {
   return json({
     ENV: {
@@ -28,6 +30,7 @@ export async function loader() {
 }
 
 export const links: LinksFunction = () => [
+  { rel: "stylesheet", href: styles },
   ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
 ];
 
@@ -52,9 +55,7 @@ export default function App() {
         <Links />
       </head>
       <body>
-        <FirebaseProvider config={firebaseConfig}>
-          <Outlet />
-        </FirebaseProvider>
+        <Outlet />
         <ScrollRestoration />
         <script
           dangerouslySetInnerHTML={{
