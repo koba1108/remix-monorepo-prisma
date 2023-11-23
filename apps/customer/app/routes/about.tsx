@@ -1,13 +1,12 @@
-export default function Index() {
+export default function About() {
   return (
     <>
       <ul>
-        <li><a href="/about">about</a></li>
+        <li><a href="/">index</a></li>
         <li><a href="/tour">tour</a></li>
         <li><a href="/users">users</a></li>
       </ul>
-
-      <div>this is index page</div>
+      <div>this is about page</div>
     </>
   );
 }
